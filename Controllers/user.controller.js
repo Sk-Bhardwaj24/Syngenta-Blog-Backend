@@ -22,11 +22,33 @@ async function Register(req, res) {
   } catch (error) {
     res.status(401).json({
       status: "Registraton Failed",
-      error: error,
+    });
+  }
+}
+async function Login(req, res) {
+  try {
+    let userDetails = req.body;
+    let searchobj = {};
+    searchobj["email"] = userDetails.email;
+    let response = await UserModel.find(searchobj);
+    if (response.length === 0) {
+      res.status(200).json({
+        status: "Register First",
+      });
+    } else {
+      res.status(200).json({
+        status: "Login Successfull",
+        user: response,
+      });
+    }
+  } catch (error) {
+    res.status(401).json({
+      status: "Login Failed",
     });
   }
 }
 
 module.exports = {
   Register,
+  Login,
 };
