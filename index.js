@@ -1,5 +1,6 @@
 const http = require("http");
 const app = require("./main.route");
+// const app = require("./Routes/user.route");
 const connectToDB = require("./DBConnection/mongoDB");
 const PORT = 9008;
 http.createServer(app).listen(PORT, () => {
