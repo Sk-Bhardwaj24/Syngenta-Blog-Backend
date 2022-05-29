@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
-const BlogSchema = Schema({
+const blogSchema = Schema({
   title: { type: String, required: true },
   description: { type: String, required: true },
   userId: { type: mongoose.Types.ObjectId, ref: "User" },
@@ -12,5 +12,5 @@ const BlogSchema = Schema({
   published: { type: Boolean, default: false }, // For Checking Blog is Published or Not
 });
 
-const Blog = mongoose.model("blogs", BlogSchema);
+const Blog = mongoose.model("Blogs", blogSchema);
 module.exports = Blog;

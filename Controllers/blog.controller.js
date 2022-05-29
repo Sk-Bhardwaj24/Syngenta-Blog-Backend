@@ -27,14 +27,16 @@ async function createBlog(req, res) {
 async function like(req, res) {
   let userId = req.headers.userid;
   let blogId = req.headers.blogid;
-  // console.log(blogId);
+  console.log(userId);
   let searchobj = {};
   searchobj["_id"] = blogId;
 
   let response = await BlogModel.findOne({ searchobj });
   let userlikeArray = response.userlikes;
+  console.log(userlikeArray);
 
   try {
+    console.log(userlikeArray.includes(userId));
     if (userlikeArray.includes(userId)) {
       let like = response.likes;
       like--;
@@ -51,6 +53,7 @@ async function like(req, res) {
       userlikeArray.push(userId);
       await BlogModel.updateOne({ _id: blogId }, { likes: like });
       await BlogModel.updateOne({ _id: blogId }, { userlikes: userlikeArray });
+      // console.log(res2);
       res.status(200).json({
         status: "Liked Successfully",
       });
@@ -63,17 +66,16 @@ async function like(req, res) {
   }
 }
 
-// For Getting all Blogs
-async function AllBlogs(req, res) {
+// fetching all blogs
+async function getBlog(req, res) {
   try {
     let blogs = await BlogModel.find({}).sort({ likes: -1 });
     res.status(200).json({
-      status: "Success Fetched All Blogs",
+      status: "Success",
       blogs: blogs,
     });
   } catch (error) {
     res.status(401).json({
-      status: "Error Occured during Fetching All blogs",
       error: error,
     });
   }
@@ -82,4 +84,5 @@ async function AllBlogs(req, res) {
 module.exports = {
   createBlog,
   like,
+  getBlog,
 };
