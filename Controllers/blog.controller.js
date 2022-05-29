@@ -81,8 +81,25 @@ async function getBlog(req, res) {
   }
 }
 
+// For getting all the detail of particular Blog
+async function Blog(req, res) {
+  try {
+    let blogId = req.headers.blogid;
+    let blogDetails = await BlogModel.findOne({ _id: blogId });
+    res.status(200).json({
+      status: "Success",
+      blog: blogDetails,
+    });
+  } catch (error) {
+    res.status(401).json({
+      status: "Failed",
+    });
+  }
+}
+
 module.exports = {
   createBlog,
   like,
   getBlog,
+  Blog,
 };
