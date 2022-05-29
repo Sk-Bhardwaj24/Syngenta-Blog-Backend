@@ -55,7 +55,7 @@ async function like(req, res) {
       await BlogModel.updateOne({ _id: blogId }, { userlikes: userlikeArray });
       // console.log(res2);
       res.status(200).json({
-        status: "Liked Successfully",
+        status: "Liked successful",
       });
     }
   } catch (error) {
@@ -97,9 +97,61 @@ async function Blog(req, res) {
   }
 }
 
+// For Searching any blog by Author Name and Blog Title
+async function SearchBlog(req, res) {
+  try {
+    let author = req.query.author;
+    let title = req.query.title;
+    // console.log(author, title);
+    let AuthorDetails = await UserModel.findOne({
+      name: { $regex: author, $options: "$i" },
+    });
+    let response = await BlogModel.find({
+      $and: [
+        { title: { $regex: title, $options: "$i" } },
+        { author: AuthorDetails._id },
+      ],
+    });
+
+    if (response.length) {
+      res.status(200).json({
+        status: "Successful",
+        blog: response,
+      });
+    } else {
+      res.status(401).json({
+        message: "Not Found",
+      });
+    }
+  } catch (error) {
+    res.json({
+      status: "Failed",
+      message: "Author or Title name is wrong",
+    });
+  }
+}
+
+// For Publishing Blog
+async function PublishBlog(req, res) {
+  try {
+    const blogId = req.headers.blogid;
+    await BlogModel.updateOne({ _id: blogId }, { published: true });
+    res.status(200).json({
+      status: "Published",
+    });
+  } catch (error) {
+    res.status(401).json({
+      status: "unsuccessful",
+      message: error,
+    });
+  }
+}
+
 module.exports = {
   createBlog,
   like,
   getBlog,
   Blog,
+  SearchBlog,
+  PublishBlog,
 };
