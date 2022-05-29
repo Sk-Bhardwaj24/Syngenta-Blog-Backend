@@ -7,7 +7,7 @@ const BlogSchema = Schema({
   description: { type: String, required: true },
   userId: { type: mongoose.Types.ObjectId, ref: "User" },
   likes: { type: Number, default: 0 },
-  userlike: [{ type: mongoose.Types.ObjectId, ref: "User" }],
+  userlikes: [{ type: mongoose.Types.ObjectId, ref: "User" }],
   label: [{ type: String }],
   published: { type: Boolean, default: false }, // For Checking Blog is Published or Not
 });
